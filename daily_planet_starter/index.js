@@ -57,20 +57,30 @@ app.delete('/articles/:id', function(req, res) {
 //     res.render('articles/:id/show', {})
     
 // })
+app.put('/articles/:id/edit', function(req, res){
+    var articleId = parseInt(req.params.id);
+    articles[articleId].title = req.body.title;
+    articles[articleId].body = requ.body.body;
+    res.send({message: 'success'});
+});
 
-app.get('/articles/edit/:idx', function(req, res) { //express to show route for animals (show one more animal) -- :idx = paramater, which animal to talk about
-    var edit = req.params.idx; //get animals
-    edit = JSON.parse(edit); //parse list of animals
-    var articleIndex = parseInt(req.params.idx); //get array index from url paramater
-    res.render('articles/edit/:idx', {articles: articles[articleIndex], id: articleIndex}); //render page with data of the specified animal
+app.get('/articles/edit/:id', function(req, res) {
+    res.render('articles/edit', { article: articles[req.params.id], idx: req.params.id });
 });
-app.post('/articles/:idx', function(req, res) { //backend -- express route
-    var articles = fs.readFileSync('./index.ejs'); //read animals file
-    articles = JSON.parse(articles); 
-    articles.push(req.params.idx); //push item to animals array
-    fs.writeFileSync('./index.ejs', JSON.stringify(articles)); //save animals to the data.json file //stringify is opposite of JSON.parse
-    res.redirect('/articles/:index'); //redirect to the GET /animals route (index)
-});
+
+// app.get('/articles/edit/:idx', function(req, res) { //express to show route for animals (show one more animal) -- :idx = paramater, which animal to talk about
+//     var edit = req.params.idx; //get animals
+//     edit = JSON.parse(edit); //parse list of animals
+//     var articleIndex = parseInt(req.params.idx); //get array index from url paramater
+//     res.render('articles/edit/:idx', {articles: articles[articleIndex], id: articleIndex}); //render page with data of the specified animal
+// });
+// app.post('/articles/:idx', function(req, res) { //backend -- express route
+//     var articles = fs.readFileSync('./index.ejs'); //read animals file
+//     articles = JSON.parse(articles); 
+//     articles.push(req.params.idx); //push item to animals array
+//     fs.writeFileSync('./index.ejs', JSON.stringify(articles)); //save animals to the data.json file //stringify is opposite of JSON.parse
+//     res.redirect('/articles/:index'); //redirect to the GET /animals route (index)
+// });
 
 app.listen(3000, function() {
     console.log("You're listening to the smooth sounds of port 3000 in the morning");
